@@ -1,0 +1,27 @@
+﻿# Visual studio code
+.vs
+
+# Solution files
+bin
+bin/*
+*/bin/*
+obj
+obj/*
+*/obj/*
+
+*.cache
+*.dll
+*.exe
+*.pdb
+
+Debug/
+Release/
+/build/
+*.suo
+*.user
+
+_ReSharper.*/
+*.sdf
+*.opensdf
+*.tlog
+*.log
