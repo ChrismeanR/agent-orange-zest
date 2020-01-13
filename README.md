@@ -1,8 +1,10 @@
 # agent-orange-zest
-•	How to install/configure, run/serve your solution on any Windows machine.   
-•	Please explicitly define the expected URL(s) to access your API via postman/browser/another tool once the API solution is being served. 
 
 ## Installation and configuration
+1. In your working directory: 
+```
+git clone git@github.com:ChrismeanR/agent-orange-zest.git
+```
 
 ## Running the solution
 
