@@ -15,39 +15,31 @@ namespace API.Controllers
     {
         public AgentOrange.Models.Data.JsonDataContext AgentContext = new AgentOrange.Models.Data.JsonDataContext();
         public IList<Agent> gobjContext;
+        public Agent gobjAgent;
 
         // GET: api/AgentApi
         [HttpGet]
         public IEnumerable<Agent> Get()
         {
             //return new string[] { "value1", "value2" };
-            gobjContext = AgentContext.AgentData();
+            gobjContext = AgentContext.GetAgentData();
             return gobjContext;
         }
 
         // GET: api/AgentApi/5
         [HttpGet("{id}", Name = "GetAgentById")]
-        public string Get(int id)
+        public Agent Get(int id)
         {
-            return "value";
+            gobjAgent = AgentContext.GetAgentData(id);
+            return gobjAgent;
         }
 
         // POST: api/AgentApi
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post([FromBody] Agent agent)
         {
+            gobjAgent = AgentContext.UpdateAgentData(agent.Id, agent);
         }
 
-        // PUT: api/AgentApi/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }

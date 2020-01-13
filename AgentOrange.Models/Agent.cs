@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace AgentOrange.Models
 {
@@ -24,11 +25,11 @@ namespace AgentOrange.Models
         [DataMember]
         public int Tier { get; set; }
         [DataMember]
-        public Dictionary<string, Phone> PhoneNumbers { get; set; }
-        [DataMember]
-        public string PhoneMobile { get; set; }
-        [DataMember]
-        public string PhonePrimary { get; set; }
+        public Phone PhoneNumbers { get; set; }
+        //[DataMember]
+        //public string PhoneMobile { get; set; }
+        //[DataMember]
+        //public string PhonePrimary { get; set; }
     }
 
     [DataContract]
