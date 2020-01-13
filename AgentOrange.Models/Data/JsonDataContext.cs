@@ -11,14 +11,19 @@ namespace AgentOrange.Models.Data
     public class JsonDataContext
     {
         public IList<Agent> gobjAgents = new List<Agent>();
+        public Agent gobjAgent = new Agent();
         public IList<Customer> gobjCustomers = new List<Customer>();
-        public string agentDataFile = @"C:\Projects\AgentOrangeZest\AgentOrange.Models\Data\agents.json";
+        public Customer gobjCustomer = new Customer();
+
+        public const string agentDataFile = @"C:\Projects\AgentOrangeZest\AgentOrange.Models\Data\agents.json";
+        public string customerDataFile = @"C:\Projects\AgentOrangeZest\AgentOrange.Models\Data\customers.json";
+
+
 
         // read in both files full of data
-        public IList<Agent> AgentData()
+        public IList<Agent> GetAgentData()
         {
             JObject agentObject = new JObject();
-            // do things
             using (StreamReader reader = new StreamReader(agentDataFile))
             {
                 var json = reader.ReadToEnd();
@@ -33,23 +38,210 @@ namespace AgentOrange.Models.Data
                     State = (string)x["state"],
                     ZipCode = (string)x["zipCode"],
                     Tier = (int)x["tier"],
-                    PhonePrimary = (string)x["phone"]["primary"],
-                    PhoneMobile = (string)x["phone"]["mobile"]
+                    PhoneNumbers = x.Select(y => new Phone
+                    {
+                        Primary = (string)x["phone"]["primary"],
+                        Mobile = (string)x["phone"]["mobile"]
+                    }).FirstOrDefault(),
+
                 }).ToList();
 
             }
             return gobjAgents;
         }
+        public Agent GetAgentData(int id)
+        {
+            JObject agentObject = new JObject();
+            using (StreamReader reader = new StreamReader(agentDataFile))
+            {
+                var json = reader.ReadToEnd();
+                JArray jArray = JArray.Parse(json) as JArray;
 
-        public IList<Customer> CustomerData() {
+                gobjAgent = jArray.Select(x => new Agent
+                {
+                    Id = (int)x["_id"],
+                    Name = (string)x["name"],
+                    StreetAddress = (string)x["address"],
+                    City = (string)x["city"],
+                    State = (string)x["state"],
+                    ZipCode = (string)x["zipCode"],
+                    Tier = (int)x["tier"],
+                    PhoneNumbers = x.Select(y => new Phone
+                    {
+                        Primary = (string)x["phone"]["primary"],
+                        Mobile = (string)x["phone"]["mobile"]
+                    }).FirstOrDefault(),
 
-            var customer = new Customer();
-            var ms = new MemoryStream();
-            var jCustomer = new DataContractJsonSerializer(typeof(Customer));
-            return gobjCustomers;
+                }).Where(x => x.Id == id).FirstOrDefault();
+
+            }
+            return gobjAgent;
         }
 
+        public IList<Customer> GetCustomerData()
+        {
+            var customer = new Customer();
 
+            using (StreamReader reader = new StreamReader(customerDataFile))
+            {
+                var json = reader.ReadToEnd();
+                JArray jArray = JArray.Parse(json) as JArray;
+
+                gobjCustomers = jArray.Select(x =>
+                {
+                    return new Customer
+                    {
+                        Id = (int)x["_id"],
+                        AgentId = (int)x["agent_id"],
+                        CustomerGuid = (Guid)x["guid"],
+                        IsActive = (bool)x["isActive"],
+                        Balance = (string)x["balance"],
+                        Age = (int)x["age"],
+                        EyeColor = (string)x["eyeColor"],
+                        Name = x.Select(y => new Person
+                        {
+                            FirstName = (string)x["name"]["first"],
+                            LastName = (string)x["name"]["last"]
+                        }).FirstOrDefault(),
+                        Company = (string)x["company"],
+                        Email = (string)x["email"],
+                        Phone = (string)x["phone"],
+                        Address = (string)x["address"],
+                        Registered = (DateTime)x["registered"], // this is string version of date time stamp
+                        Latitude = (string)x["latitude"],
+                        Longitude = (string)x["longitude"],
+                        Tags = JToken.Parse(x["tags"].ToString()).ToObject<string[]>()
+                    };
+                }).ToList();
+            }
+
+            return gobjCustomers;
+
+        }
+
+        public Customer GetCustomerData(int id)
+        {
+            var customer = new Customer();
+
+            using (StreamReader reader = new StreamReader(customerDataFile))
+            {
+                var json = reader.ReadToEnd();
+                JArray jArray = JArray.Parse(json) as JArray;
+
+                gobjCustomer = jArray.Select(x =>
+                {
+                    return new Customer
+                    {
+                        Id = (int)x["_id"],
+                        AgentId = (int)x["agent_id"],
+                        CustomerGuid = (Guid)x["guid"],
+                        IsActive = (bool)x["isActive"],
+                        Balance = (string)x["balance"],
+                        Age = (int)x["age"],
+                        EyeColor = (string)x["eyeColor"],
+                        Name = x.Select(y => new Person
+                        {
+                            FirstName = (string)x["name"]["first"],
+                            LastName = (string)x["name"]["last"]
+                        }).FirstOrDefault(),
+                        Company = (string)x["company"],
+                        Email = (string)x["email"],
+                        Phone = (string)x["phone"],
+                        Address = (string)x["address"],
+                        Registered = (DateTime)x["registered"], // this is string version of date time stamp
+                        Latitude = (string)x["latitude"],
+                        Longitude = (string)x["longitude"],
+                        Tags = JToken.Parse(x["tags"].ToString()).ToObject<string[]>()
+                    };
+                }).Where(x => x.Id == id).FirstOrDefault();
+            }
+
+            return gobjCustomer;
+
+        }
+
+        public Agent UpdateAgentData(int? id, Agent? agent)
+        {
+            // serialize all updated agent info, store it into json file
+            return agent;
+        }
+        public Customer UpdateCustomerData(int id, Customer? customer)
+        {
+            Customer context = GetCustomerData(id);
+
+            if (customer == null)
+            {
+                customer = context;
+            }
+
+            JArray jArray = new JArray();
+            JObject jObject = new JObject(customer);
+            File.WriteAllText(customerDataFile, jObject.ToString());
+            using (StreamWriter file = File.CreateText(customerDataFile))
+            using (JsonTextWriter writer = new JsonTextWriter(file))
+            {
+                jObject.WriteTo(writer);
+            }
+
+            // serialize all updated customer values, store back into json file
+            return customer;
+
+        }
+
+        public void DeleteCustomerData(int id)
+        {
+            Customer context = GetCustomerData(id);
+
+        }
+        public Customer CreateCustomer(Customer customer)
+        {
+            var obj = new Customer();
+            // get all agent & customer IDs, 
+            var allIds = GetCustomerData().Select(x => x.Id);
+            var allAgentId = GetCustomerData().Select(x => x.AgentId);
+
+            // find largest number, add +1 to it
+            Random randomInt = new Random();
+            int newId = 0;
+            int newAgentId = 0;
+            foreach (var item in allIds)
+            {
+                newId = randomInt.Next();
+                if (item == newId)
+                {
+                    newId = randomInt.Next();
+                }
+            }
+            foreach (var agentId in allAgentId)
+            {
+                newAgentId = randomInt.Next();
+                if (agentId == newAgentId)
+                    newAgentId = randomInt.Next();
+            }
+
+            gobjCustomers.Add(new Customer
+            {
+                Id = newId, // need new id
+                Address = customer.Address,
+                Age = customer.Age,
+                AgentId = newAgentId, // need new Id
+                Balance = customer.Balance,
+                Company = customer.Company,
+                CustomerGuid = new Guid(),
+                Email = customer.Email,
+                EyeColor = customer.EyeColor,
+                IsActive = customer.IsActive,
+                Latitude = customer.Latitude,
+                Longitude = customer.Longitude,
+                Name = new Person { FirstName = customer.Name.FirstName, LastName = customer.Name.LastName },
+                Phone = customer.Phone,
+                Registered = customer.Registered,
+                Tags = customer.Tags
+
+            });
+
+            return gobjCustomers.Where(x=> x.Id == newId).FirstOrDefault();
+        }
         // magic
     }
 }

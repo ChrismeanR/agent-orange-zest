@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using AgentOrange.Models;
 
 namespace API.Controllers
 {
@@ -11,36 +12,50 @@ namespace API.Controllers
     [ApiController]
     public class CustomerController : ControllerBase
     {
+        public AgentOrange.Models.Data.JsonDataContext CustomerContext = new AgentOrange.Models.Data.JsonDataContext();
+        public IList<Customer> gobjListCustomer;
+        public Customer gobjCustomer;
+
         // GET: api/Customer
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<AgentOrange.Models.Customer> Get()
         {
-            return new string[] { "value1", "value2" };
+            gobjListCustomer = CustomerContext.GetCustomerData();
+            
+            return gobjListCustomer;//new string[] { "value1", "value2" };
         }
 
         // GET: api/Customer/5
         [HttpGet("{id}", Name = "GetCustomerById")]
-        public string Get(int id)
+        public Customer Get(int id)
         {
-            return "value";
+            gobjListCustomer = CustomerContext.GetCustomerData();
+            var customer = gobjListCustomer.Select(item => item).Where(x=> x.Id ==id).FirstOrDefault();
+            return customer;
         }
 
         // POST: api/Customer
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post([FromBody] Customer customer)
         {
+            gobjCustomer = CustomerContext.UpdateCustomerData(customer.Id, customer);
         }
 
-        // PUT: api/Customer/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        // POST: api/Customer
+        [HttpPost]
+        public void Put([FromBody] Customer customer)
         {
+            gobjListCustomer = CustomerContext.GetCustomerData();
+            var objCustomer = gobjListCustomer.Select(item => item).Where(x => x.Id == customer.Id).FirstOrDefault();
+            CustomerContext.UpdateCustomerData(objCustomer.Id, objCustomer);
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            gobjListCustomer = CustomerContext.GetCustomerData();
+            var customer = gobjListCustomer.Select(item => item).Where(x => x.Id == id).FirstOrDefault();
         }
     }
 }

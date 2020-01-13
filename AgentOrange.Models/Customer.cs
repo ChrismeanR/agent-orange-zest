@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace AgentOrange.Models
 {
@@ -8,15 +9,18 @@ namespace AgentOrange.Models
     public class Customer 
     {
         [DataMember]
+        [JsonPropertyName("_id")]
         public int Id { get; set; }
         [DataMember]
+        [JsonPropertyName("agent_id")]
         public int AgentId { get; set; }
         [DataMember]
+        [JsonPropertyName("guid")]
         public Guid CustomerGuid { get; set; }
         [DataMember]
         public bool IsActive { get; set; }
         [DataMember]
-        public decimal Balance { get; set; }
+        public string Balance { get; set; }
         [DataMember]
         public string Company { get; set; }
         [DataMember]
@@ -28,19 +32,20 @@ namespace AgentOrange.Models
         [DataMember]
         public DateTime Registered { get; set; }
         [DataMember]
-        public string latitude { get; set; }
+        public string Latitude { get; set; }
         [DataMember]
-        public string longitude { get; set; }
+        public string Longitude { get; set; }
         [DataMember]
         public string[] Tags { get; set; }
-        [DataMember]
-        public Dictionary<string, Person> Name { get; set; }
+        //[DataMember]
+        //[JsonPropertyName("name")]
+        //public Person Name { get; set; }
 
         [DataMember]
         public int Age { get; set; }
         [DataMember]
         public string EyeColor { get; set; }
-
+        public Person Name { get; internal set; }
     }
 
     

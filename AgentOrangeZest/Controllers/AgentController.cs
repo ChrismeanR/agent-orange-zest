@@ -15,7 +15,7 @@ namespace AgentOrangeZest.Controllers
         // GET: Agent
         public ActionResult Index()
         {
-            gobjContext = AgentContext.AgentData();
+            gobjContext = AgentContext.GetAgentData();
 
             //ViewData.Model = agent.gobjAgents;
             ViewData.Model = gobjContext;

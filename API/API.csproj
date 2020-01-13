@@ -1,9 +1,14 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>90cbba07-1311-49c7-b323-cab2f2cca49a</UserSecretsId>
     <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
+    <AssemblyName>API</AssemblyName>
+    <Authors>Christine Romano</Authors>
+    <Company>MeanGirlTech aka Christine Romano</Company>
+    <StartupObject></StartupObject>
+    <ApplicationIcon>gitprofilepic_Nxw_3.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
