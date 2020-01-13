@@ -13,6 +13,7 @@ namespace AgentOrange.Models
         public int Id { get; set; }
         [DataMember]
         [JsonPropertyName("agent_id")]
+        //public Agent AgentId { get; set; }
         public int AgentId { get; set; }
         [DataMember]
         [JsonPropertyName("guid")]
@@ -37,14 +38,11 @@ namespace AgentOrange.Models
         public string Longitude { get; set; }
         [DataMember]
         public string[] Tags { get; set; }
-        //[DataMember]
-        //[JsonPropertyName("name")]
-        //public Person Name { get; set; }
-
         [DataMember]
         public int Age { get; set; }
         [DataMember]
         public string EyeColor { get; set; }
+        [DataMember]
         public Person Name { get; internal set; }
     }
 

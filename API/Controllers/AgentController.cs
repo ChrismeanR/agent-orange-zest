@@ -39,7 +39,6 @@ namespace API.Controllers
         public void Post([FromBody] Agent agent)
         {
             gobjAgent = AgentContext.UpdateAgentData(agent.Id, agent);
-
         }
 
     }

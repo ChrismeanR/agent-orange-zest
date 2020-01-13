@@ -168,6 +168,7 @@ namespace AgentOrange.Models.Data
         public Customer UpdateCustomerData(int id, Customer? customer)
         {
             Customer context = GetCustomerData(id);
+            // compare obj coming in for differences, update those differences
 
             if (customer == null)
             {
@@ -190,7 +191,19 @@ namespace AgentOrange.Models.Data
 
         public void DeleteCustomerData(int id)
         {
-            Customer context = GetCustomerData(id);
+            Customer customer = GetCustomerData(id);
+            gobjCustomers = GetCustomerData();
+            gobjCustomers.Remove(customer);
+
+            JArray jArray = new JArray();
+
+            JObject jObject = new JObject(customer);
+            File.WriteAllText(customerDataFile, jObject.ToString());
+            using (StreamWriter file = File.CreateText(customerDataFile))
+            using (JsonTextWriter writer = new JsonTextWriter(file))
+            {
+                jObject.WriteTo(writer);
+            }
 
         }
         public Customer CreateCustomer(Customer customer)
@@ -198,7 +211,7 @@ namespace AgentOrange.Models.Data
             var obj = new Customer();
             // get all agent & customer IDs, 
             var allIds = GetCustomerData().Select(x => x.Id);
-            var allAgentId = GetCustomerData().Select(x => x.AgentId);
+            var allAgentId = GetCustomerData().Select(x => x.Id);
 
             // find largest number, add +1 to it
             Random randomInt = new Random();
@@ -212,19 +225,13 @@ namespace AgentOrange.Models.Data
                     newId = randomInt.Next();
                 }
             }
-            foreach (var agentId in allAgentId)
-            {
-                newAgentId = randomInt.Next();
-                if (agentId == newAgentId)
-                    newAgentId = randomInt.Next();
-            }
 
             gobjCustomers.Add(new Customer
             {
                 Id = newId, // need new id
                 Address = customer.Address,
                 Age = customer.Age,
-                AgentId = newAgentId, // need new Id
+                AgentId = customer.AgentId, // need new Id
                 Balance = customer.Balance,
                 Company = customer.Company,
                 CustomerGuid = new Guid(),
@@ -240,7 +247,7 @@ namespace AgentOrange.Models.Data
 
             });
 
-            return gobjCustomers.Where(x=> x.Id == newId).FirstOrDefault();
+            return gobjCustomers.Where(x => x.Id == newId).FirstOrDefault();
         }
         // magic
     }

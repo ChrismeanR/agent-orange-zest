@@ -22,7 +22,7 @@ namespace API.Controllers
         {
             gobjListCustomer = CustomerContext.GetCustomerData();
             
-            return gobjListCustomer;//new string[] { "value1", "value2" };
+            return gobjListCustomer;
         }
 
         // GET: api/Customer/5
@@ -42,7 +42,7 @@ namespace API.Controllers
         }
 
         // POST: api/Customer
-        [HttpPost]
+        [HttpPut]
         public void Put([FromBody] Customer customer)
         {
             gobjListCustomer = CustomerContext.GetCustomerData();
