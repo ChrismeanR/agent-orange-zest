@@ -175,15 +175,21 @@ namespace AgentOrange.Models.Data
                 customer = context;
             }
 
-            JArray jArray = new JArray();
-            JObject jObject = new JObject(customer);
-            File.WriteAllText(customerDataFile, jObject.ToString());
-            using (StreamWriter file = File.CreateText(customerDataFile))
-            using (JsonTextWriter writer = new JsonTextWriter(file))
+            // File.WriteAllText(customerDataFile, objCust);
+            using (StreamReader reader = new StreamReader(customerDataFile))
             {
-                jObject.WriteTo(writer);
-            }
+                JArray jArray = new JArray();
+                var objCust = JsonConvert.SerializeObject(customer);
+                JObject jObject = new JObject();
 
+                var json = reader.ReadToEnd();
+
+                using (StreamWriter file = File.CreateText(json))
+                using (JsonTextWriter writer = new JsonTextWriter(file))
+                {
+                    jObject.WriteTo(writer);
+                }
+            }
             // serialize all updated customer values, store back into json file
             return customer;
 
@@ -193,16 +199,26 @@ namespace AgentOrange.Models.Data
         {
             Customer customer = GetCustomerData(id);
             gobjCustomers = GetCustomerData();
-            gobjCustomers.Remove(customer);
-
+            
             JArray jArray = new JArray();
-
-            JObject jObject = new JObject(customer);
-            File.WriteAllText(customerDataFile, jObject.ToString());
-            using (StreamWriter file = File.CreateText(customerDataFile))
-            using (JsonTextWriter writer = new JsonTextWriter(file))
+            using (StreamReader reader = new StreamReader(customerDataFile))
             {
-                jObject.WriteTo(writer);
+                // read the file
+                var jsonFileData = reader.ReadToEnd();
+                string convertedCustomer = JsonConvert.SerializeObject(customer, Formatting.Indented);
+                foreach (var cust in gobjCustomers)
+                {
+
+                }
+
+
+                JObject jObject = new JObject(customer);
+
+                using (StreamWriter file = File.CreateText(jsonFileData))
+                using (JsonTextWriter writer = new JsonTextWriter(file))
+                {
+                    jObject.WriteTo(writer);
+                }
             }
 
         }
@@ -242,7 +258,7 @@ namespace AgentOrange.Models.Data
                 Longitude = customer.Longitude,
                 Name = new Person { FirstName = customer.Name.FirstName, LastName = customer.Name.LastName },
                 Phone = customer.Phone,
-                Registered = customer.Registered,
+                Registered = DateTime.Parse(customer.Registered.ToString("f")),
                 Tags = customer.Tags
 
             });

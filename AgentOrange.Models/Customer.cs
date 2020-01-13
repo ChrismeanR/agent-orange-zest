@@ -1,50 +1,71 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 
 namespace AgentOrange.Models
 {
     [DataContract]
-    public class Customer 
+    public class Customer
     {
-        [DataMember]
+        [DataMember(IsRequired = true)]
+        [Key]
         [JsonPropertyName("_id")]
-        public int Id { get; set; }
-        [DataMember]
+        public int Id { get; internal set; }
+        [DataMember(IsRequired = true)]
         [JsonPropertyName("agent_id")]
-        //public Agent AgentId { get; set; }
-        public int AgentId { get; set; }
+        public int AgentId { get; internal set; } //map this to Agent.id
         [DataMember]
         [JsonPropertyName("guid")]
         public Guid CustomerGuid { get; set; }
         [DataMember]
+        [JsonPropertyName("isActive")]
         public bool IsActive { get; set; }
         [DataMember]
+        [JsonPropertyName("balance")]
         public string Balance { get; set; }
         [DataMember]
+        [JsonPropertyName("company")]
         public string Company { get; set; }
         [DataMember]
+        [JsonPropertyName("email")]
         public string Email { get; set; }
         [DataMember]
+        [JsonPropertyName("phone")]
         public string Phone { get; set; }
         [DataMember]
+        [JsonPropertyName("address")]
         public string Address { get; set; }
         [DataMember]
+        [JsonPropertyName("registered")]
         public DateTime Registered { get; set; }
         [DataMember]
+        [JsonPropertyName("latitude")]
         public string Latitude { get; set; }
         [DataMember]
+        [JsonPropertyName("longitude")]
         public string Longitude { get; set; }
         [DataMember]
+        [JsonPropertyName("tags")]
         public string[] Tags { get; set; }
         [DataMember]
+        [JsonPropertyName("age")]
         public int Age { get; set; }
         [DataMember]
+        [JsonPropertyName("eyeColor")]
+        //[JsonConverter(typeof(JsonStringEnumConverter))]
         public string EyeColor { get; set; }
         [DataMember]
+        [JsonPropertyName("name")]
         public Person Name { get; internal set; }
     }
 
-    
+    public enum CustomerEyeColor
+    {
+        Green,
+        Brown,
+        Blue,
+        Hazel
+    }
 }

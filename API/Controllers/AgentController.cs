@@ -40,6 +40,12 @@ namespace API.Controllers
         {
             gobjAgent = AgentContext.UpdateAgentData(agent.Id, agent);
         }
-
+        // POST: api/AgentApi
+        [HttpPut]
+        public void Put([FromBody] Agent agent)
+        {
+            // get object, update fields
+            gobjAgent = AgentContext.UpdateAgentData(agent.Id, agent);
+        }
     }
 }

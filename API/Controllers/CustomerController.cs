@@ -45,17 +45,14 @@ namespace API.Controllers
         [HttpPut]
         public void Put([FromBody] Customer customer)
         {
-            gobjListCustomer = CustomerContext.GetCustomerData();
-            var objCustomer = gobjListCustomer.Select(item => item).Where(x => x.Id == customer.Id).FirstOrDefault();
-            CustomerContext.UpdateCustomerData(objCustomer.Id, objCustomer);
+            CustomerContext.UpdateCustomerData(customer.Id, customer); 
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            gobjListCustomer = CustomerContext.GetCustomerData();
-            var customer = gobjListCustomer.Select(item => item).Where(x => x.Id == id).FirstOrDefault();
+            CustomerContext.DeleteCustomerData(id);
         }
     }
 }
