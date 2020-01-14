@@ -21,7 +21,6 @@ namespace API.Controllers
         [HttpGet]
         public IEnumerable<Agent> Get()
         {
-            //return new string[] { "value1", "value2" };
             gobjContext = AgentContext.GetAgentData();
             return gobjContext;
         }
@@ -39,6 +38,12 @@ namespace API.Controllers
         public void Post([FromBody] Agent agent)
         {
             gobjAgent = AgentContext.UpdateAgentData(agent.Id, agent);
+        }
+        // POST: api/AgentApi
+        [HttpPut]
+        public Agent Put([FromBody] Agent agent)
+        {
+            return gobjAgent = AgentContext.UpdateAgentData(agent.Id, agent);
         }
 
     }
