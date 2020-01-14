@@ -21,7 +21,6 @@ namespace API.Controllers
         [HttpGet]
         public IEnumerable<Agent> Get()
         {
-            //return new string[] { "value1", "value2" };
             gobjContext = AgentContext.GetAgentData();
             return gobjContext;
         }
@@ -44,7 +43,6 @@ namespace API.Controllers
         [HttpPut]
         public Agent Put([FromBody] Agent agent)
         {
-            // get object, update fields
             return gobjAgent = AgentContext.UpdateAgentData(agent.Id, agent);
         }
 

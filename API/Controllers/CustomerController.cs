@@ -38,12 +38,6 @@ namespace API.Controllers
         [HttpPost]
         public Customer Post([FromBody] Customer customer)
         {
-            //if (customer.Id == 0|| customer.Id == null)
-            //{
-            // return gobjCustomer = CustomerContext.CreateCustomer(customer);
-            //}
-
-            //return gobjCustomer = CustomerContext.UpdateCustomerData(customer.Id, customer); 
             return customer;
         }
 
@@ -51,7 +45,7 @@ namespace API.Controllers
         [HttpPut]
         public Customer Put([FromBody] Customer customer)
         {
-            return customer;//CustomerContext.UpdateCustomerData(customer.Id, customer); 
+            return customer;
         }
 
         // DELETE: api/ApiWithActions/5

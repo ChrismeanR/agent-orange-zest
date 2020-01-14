@@ -113,7 +113,6 @@ namespace AgentOrange.Models.Data
             }
 
             return gobjCustomers ?? null;
-
         }
 
         public Customer GetCustomerData(int id)
@@ -166,9 +165,6 @@ namespace AgentOrange.Models.Data
         }
         public Customer UpdateCustomerData(int id, Customer? customer)
         {
-            //if (id == 0 || id == null)
-            //    CreateCustomer(customer);
-
             Customer context = GetCustomerData(id);
             var obj = JsonConvert.SerializeObject(customer);
 
@@ -193,15 +189,6 @@ namespace AgentOrange.Models.Data
             }
             // serialize
             var convertedCustomer = JsonConvert.SerializeObject(gobjCustomers, Formatting.Indented);
-
-            //using (StreamWriter file = new StreamWriter(customerDataFile))
-            //{
-            //    using (JsonTextWriter writer = new JsonTextWriter(file))
-            //    {
-            //        writer.WriteRaw(convertedCustomer);
-            //        //convertedCustomer.WriteTo(writer);
-            //    }
-            //}
 
             return customer;
 
@@ -230,74 +217,38 @@ namespace AgentOrange.Models.Data
                 }
                 Console.WriteLine(gobjCustomers.Count);
             }
-            #region MyRegion
-            // serialize (THis really messed up the json file and did not serialize how I expected. Commenting, revisit
-
-            //var convertedCustomer = JsonConvert.SerializeObject(gobjCustomers, Formatting.Indented).ToLower();
-
-            //using (StreamWriter file = new StreamWriter(customerDataFile))
-            //{
-            //    using (JsonTextWriter writer = new JsonTextWriter(file))
-            //    {
-            //        writer.WriteRaw(convertedCustomer);
-            //        //convertedCustomer.WriteTo(writer);
-            //    }
-            //} 
-            #endregion
-
+           
             return gobjCustomers;
-
         }
+
         public Customer CreateCustomer(Customer customer)
         {
             int newId = 0;
             var obj = new Customer();
-            obj = customer; 
-            //gobjCustomers = GetCustomerData();
+            obj = customer;
 
-            //using (StreamReader reader = new StreamReader(customerDataFile))
-            //{
-                // read the file
-                //var jsonFileData = reader.ReadToEnd();
+            Random randomInt = new Random();
+            newId = randomInt.Next();
 
-                Random randomInt = new Random();
-                newId = randomInt.Next();
+            obj.Id = customer.Id = newId; // need new id
+            obj.Address = customer.Address;
+            obj.Age = customer.Age;
+            obj.AgentId = customer.AgentId; // "list" of agent ids available
+            obj.Balance = customer.Balance;
+            obj.Company = customer.Company;
+            obj.CustomerGuid = customer.CustomerGuid = new Guid();
+            obj.Email = customer.Email;
+            obj.EyeColor = customer.EyeColor;
+            obj.IsActive = customer.IsActive;
+            obj.Latitude = customer.Latitude;
+            obj.Longitude = customer.Longitude;
+            obj.Name = customer.Name = new Person { FirstName = customer.Name.FirstName, LastName = customer.Name.LastName };
+            obj.Phone = customer.Phone;
+            obj.Registered = customer.Registered = DateTime.Parse(DateTime.Now.ToString("f"));
+            obj.Tags = customer.Tags;
 
-                obj.Id = customer.Id = newId; // need new id
-                obj.Address = customer.Address;
-                obj.Age = customer.Age;
-                obj.AgentId = customer.AgentId; // "list" of agent ids available
-                obj.Balance = customer.Balance;
-                obj.Company = customer.Company;
-                obj.CustomerGuid = customer.CustomerGuid = new Guid();
-                obj.Email = customer.Email;
-                obj.EyeColor = customer.EyeColor;
-                obj.IsActive = customer.IsActive;
-                obj.Latitude = customer.Latitude;
-                obj.Longitude = customer.Longitude;
-                obj.Name = customer.Name = new Person { FirstName = customer.Name.FirstName, LastName = customer.Name.LastName };
-                obj.Phone = customer.Phone;
-                obj.Registered = customer.Registered = DateTime.Parse(DateTime.Now.ToString("f"));
-                obj.Tags = customer.Tags;
 
-            //}
-
-            #region Hidden - would save to file
-            // serialize
-            //var convertedCustomer = JsonConvert.SerializeObject(customers, Formatting.Indented);
-
-            //using (StreamWriter file = new StreamWriter(customerDataFile))
-            //{
-            //    var data = GetCustomerData();
-            //    using (JsonTextWriter writer = new JsonTextWriter(file))
-            //    {
-            //        // writer.WriteRaw(convertedCustomer);
-            //        //convertedCustomer.WriteTo(writer);
-            //    }
-            //} 
-            #endregion
-
-            return obj;//gobjCustomers.Where(x => x.Id == newId).FirstOrDefault();
+            return obj;
         }
         // magic
     }
