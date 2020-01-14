@@ -16,8 +16,9 @@ git clone git@github.com:ChrismeanR/agent-orange-zest.git
 ## URLs (Insomnia Rest Client)
 Download (used instead of postman) https://insomnia.rest/ 
 - import file: (note: you may be able to import this file into Postman)
+`Insomnia_2020-01-13.json` after installing Insomnia client, import this file. Else, give Postman a try (it's just json, and the clients are quite similar)
 
-Or
+Or, use the following:
 
 ### Agent: 
 - GET: http://localhost:5000/agent
@@ -34,6 +35,6 @@ Or
 
 
 ### Gotchas
-1. serializing and deserializing tripped me up more than I'd like
+1. Serializing and deserializing tripped me up more than I'd like
 2. Storing data to a file was not as straight forward as I thought and I likely overcomplicated things.
-3. 
+
