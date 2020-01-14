@@ -11,10 +11,10 @@ namespace AgentOrange.Models
     {
         [DataMember]
         [JsonPropertyName("_id")]
-        public int Id { get; internal set; }
+        public int Id { get; set; }
         [DataMember]
         [JsonPropertyName("agent_id")]
-        public int AgentId { get; internal set; } //map this to Agent.id
+        public int AgentId { get; set; } //map this to Agent.id
         [DataMember]
         [JsonPropertyName("guid")]
         public Guid CustomerGuid { get; set; }
@@ -58,7 +58,7 @@ namespace AgentOrange.Models
         public string EyeColor { get; set; }
         [DataMember]
         [JsonPropertyName("name")]
-        public Person Name { get; internal set; }
+        public Person Name { get; set; }
     }
 
 
