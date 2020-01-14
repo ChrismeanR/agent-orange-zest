@@ -10,9 +10,8 @@ namespace AgentOrange.Models
     [DataContract]
     public class Agent
     {
-        [DataMember (IsRequired = true)]
+        [DataMember]
         [JsonPropertyName("_id")]
-        [Key]
         public int Id { get; set;}
         //public Person Name { get; set; }
         [DataMember]
@@ -43,7 +42,7 @@ namespace AgentOrange.Models
     [DataContract]
     public class Phone
     {
-        [DataMember(IsRequired =true)]
+        [DataMember]
         [DataType(DataType.PhoneNumber)]
         [JsonPropertyName("primary")]
         public string Primary { get; set; }

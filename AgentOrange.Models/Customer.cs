@@ -9,11 +9,10 @@ namespace AgentOrange.Models
     [DataContract]
     public class Customer
     {
-        [DataMember(IsRequired = true)]
-        [Key]
+        [DataMember]
         [JsonPropertyName("_id")]
         public int Id { get; internal set; }
-        [DataMember(IsRequired = true)]
+        [DataMember]
         [JsonPropertyName("agent_id")]
         public int AgentId { get; internal set; } //map this to Agent.id
         [DataMember]
@@ -29,10 +28,12 @@ namespace AgentOrange.Models
         [JsonPropertyName("company")]
         public string Company { get; set; }
         [DataMember]
-        [JsonPropertyName("email")]
+        [DataType(DataType.EmailAddress)]
+      [JsonPropertyName("email")]
         public string Email { get; set; }
         [DataMember]
         [JsonPropertyName("phone")]
+        [DataType(DataType.PhoneNumber)]
         public string Phone { get; set; }
         [DataMember]
         [JsonPropertyName("address")]
@@ -54,18 +55,11 @@ namespace AgentOrange.Models
         public int Age { get; set; }
         [DataMember]
         [JsonPropertyName("eyeColor")]
-        //[JsonConverter(typeof(JsonStringEnumConverter))]
         public string EyeColor { get; set; }
         [DataMember]
         [JsonPropertyName("name")]
         public Person Name { get; internal set; }
     }
 
-    public enum CustomerEyeColor
-    {
-        Green,
-        Brown,
-        Blue,
-        Hazel
-    }
+
 }

@@ -36,23 +36,29 @@ namespace API.Controllers
 
         // POST: api/Customer
         [HttpPost]
-        public void Post([FromBody] Customer customer)
+        public Customer Post([FromBody] Customer customer)
         {
-            gobjCustomer = CustomerContext.UpdateCustomerData(customer.Id, customer);
+            //if (customer.Id == 0|| customer.Id == null)
+            //{
+            // return gobjCustomer = CustomerContext.CreateCustomer(customer);
+            //}
+
+            //return gobjCustomer = CustomerContext.UpdateCustomerData(customer.Id, customer); 
+            return customer;
         }
 
         // POST: api/Customer
         [HttpPut]
-        public void Put([FromBody] Customer customer)
+        public Customer Put([FromBody] Customer customer)
         {
-            CustomerContext.UpdateCustomerData(customer.Id, customer); 
+            return customer;//CustomerContext.UpdateCustomerData(customer.Id, customer); 
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IList<Customer> Delete(int id)
         {
-            CustomerContext.DeleteCustomerData(id);
+           return CustomerContext.DeleteCustomerData(id);
         }
     }
 }
