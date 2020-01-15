@@ -42,7 +42,7 @@ namespace API.Controllers
         [HttpPut]
         public Customer Put([FromBody] Customer customer)
         {
-            return customer;
+            return CustomerContext.UpdateCustomerData(customer.Id, customer);
         }
 
         // DELETE: api/ApiWithActions/5
