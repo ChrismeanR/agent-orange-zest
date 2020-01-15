@@ -21,31 +21,28 @@ namespace API.Controllers
         public IEnumerable<AgentOrange.Models.Customer> Get()
         {
             gobjListCustomer = CustomerContext.GetCustomerData();
-            
             return gobjListCustomer;
         }
 
-        // GET: api/Customer/5
-        [HttpGet("{id}", Name = "GetCustomerById")]
-        public Customer Get(int id)
+        // GET: api/Customer/5054
+        [HttpGet("{id}", Name = "GetCustomersByAgentId")]
+        public IList<AgentCustomers> Get(int id)
         {
-            gobjListCustomer = CustomerContext.GetCustomerData();
-            var customer = gobjListCustomer.Select(item => item).Where(x=> x.Id ==id).FirstOrDefault();
-            return customer;
+            return CustomerContext.GetCustomersByAgent(id);
         }
 
         // POST: api/Customer
         [HttpPost]
         public Customer Post([FromBody] Customer customer)
         {
-            return customer;
+            return CustomerContext.CreateCustomer(customer);
         }
 
         // POST: api/Customer
         [HttpPut]
         public Customer Put([FromBody] Customer customer)
         {
-            return customer;
+            return CustomerContext.UpdateCustomerData(customer);
         }
 
         // DELETE: api/ApiWithActions/5

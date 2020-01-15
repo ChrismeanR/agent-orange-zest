@@ -25,11 +25,20 @@ namespace AgentOrange.Models
         [JsonPropertyName("balance")]
         public string Balance { get; set; }
         [DataMember]
+        [JsonPropertyName("age")]
+        public int Age { get; set; }
+        [DataMember]
+        [JsonPropertyName("eyeColor")]
+        public string EyeColor { get; set; }
+        [DataMember]
+        [JsonPropertyName("name")]
+        public Person Name { get; set; }
+        [DataMember]
         [JsonPropertyName("company")]
         public string Company { get; set; }
         [DataMember]
         [DataType(DataType.EmailAddress)]
-      [JsonPropertyName("email")]
+        [JsonPropertyName("email")]
         public string Email { get; set; }
         [DataMember]
         [JsonPropertyName("phone")]
@@ -50,15 +59,7 @@ namespace AgentOrange.Models
         [DataMember]
         [JsonPropertyName("tags")]
         public string[] Tags { get; set; }
-        [DataMember]
-        [JsonPropertyName("age")]
-        public int Age { get; set; }
-        [DataMember]
-        [JsonPropertyName("eyeColor")]
-        public string EyeColor { get; set; }
-        [DataMember]
-        [JsonPropertyName("name")]
-        public Person Name { get; set; }
+       
     }
 
 
