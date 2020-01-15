@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Json;
+using static AgentOrange.Models.HelperUtils;
 
 namespace AgentOrange.Models.Data
 {
@@ -149,11 +150,31 @@ namespace AgentOrange.Models.Data
                         Longitude = (string)x["longitude"],
                         Tags = JToken.Parse(x["tags"].ToString()).ToObject<string[]>()
                     };
-                }).Where(x => x.Id == id).FirstOrDefault();
+                }).Where(x => x.AgentId == id).FirstOrDefault();
             }
 
             return gobjCustomer;
+        }
 
+        public IList<AgentCustomers> GetCustomersByAgent(int id)
+        {
+            gobjCustomers = GetCustomerData();
+            var obj = gobjCustomers.Where(x => x.AgentId == id).ToList();
+            var colReturn = new List<AgentCustomers>();
+            char[] delimiterChars = { ',' };
+
+            foreach (var customer in obj)
+            {
+                var agentCust = new AgentCustomers();
+                var addressSections = customer.Address.Split(delimiterChars);
+
+                agentCust.City = addressSections[1];
+                agentCust.State = addressSections[2];
+                agentCust.Name = $"{customer.Name.LastName}, {customer.Name.FirstName}";
+                colReturn.Add(agentCust);
+            }
+
+            return colReturn;
         }
 
         public Agent UpdateAgentData(int? id, Agent? agent)
@@ -163,35 +184,45 @@ namespace AgentOrange.Models.Data
             Console.WriteLine(cereal);
             return agent;
         }
-        public Customer UpdateCustomerData(int id, Customer? customer)
+        public Customer UpdateCustomerData(Customer customer)
         {
-            Customer context = GetCustomerData(id);
-            var obj = JsonConvert.SerializeObject(customer);
-
             using (StreamReader reader = new StreamReader(customerDataFile))
             {
-                // read the file
-                var jsonFileData = reader.ReadToEnd();
-                // deserialize via linq
+                // deserialize entire json blob via linq
                 gobjCustomers = GetCustomerData();
-                Console.WriteLine(gobjCustomers.Count);
 
-                //remove this object from the list
+                //get item by index, update this object in the list
                 foreach (Customer person in gobjCustomers)
                 {
-                    if (person.Id == customer.Id)
+                    int index = gobjCustomers.IndexOf(person);
+
+                    if (index >= 0 && person.Id == customer.Id)
                     {
-                        gobjCustomers.Add(person);
+                        gobjCustomers[index] = customer;
                         break;
                     }
                 }
-                Console.WriteLine(gobjCustomers.Count);
             }
-            // serialize
-            var convertedCustomer = JsonConvert.SerializeObject(gobjCustomers, Formatting.Indented);
+
+            var settings = new JsonSerializerSettings();
+            //settings.ContractResolver = new LowercaseContractResolver();
+            settings.ContractResolver = new CustomContractResolver();
+            var convertedCustomer = JsonConvert.SerializeObject(gobjCustomers, Formatting.Indented, settings);
+            SaveCustomerData(convertedCustomer);
 
             return customer;
+        }
 
+        private static void SaveCustomerData(string convertedCustomer)
+        {
+            // save to file here with convertedCustomer
+            using (StreamWriter file = new StreamWriter(customerDataFile))
+            {
+                using (JsonTextWriter writer = new JsonTextWriter(file))
+                {
+                    writer.WriteRaw(convertedCustomer);
+                }
+            }
         }
 
         public IList<Customer> DeleteCustomerData(int id)
@@ -217,7 +248,13 @@ namespace AgentOrange.Models.Data
                 }
                 Console.WriteLine(gobjCustomers.Count);
             }
-           
+
+            // serialize 
+            var settings = new JsonSerializerSettings();
+            settings.ContractResolver = new LowercaseContractResolver();
+            var convertedCustomer = JsonConvert.SerializeObject(gobjCustomers, Formatting.Indented, settings);
+            SaveCustomerData(convertedCustomer);
+
             return gobjCustomers;
         }
 
@@ -230,23 +267,50 @@ namespace AgentOrange.Models.Data
             Random randomInt = new Random();
             newId = randomInt.Next();
 
-            obj.Id = customer.Id = newId; // need new id
-            obj.Address = customer.Address;
-            obj.Age = customer.Age;
-            obj.AgentId = customer.AgentId; // "list" of agent ids available
-            obj.Balance = customer.Balance;
-            obj.Company = customer.Company;
-            obj.CustomerGuid = customer.CustomerGuid = new Guid();
-            obj.Email = customer.Email;
-            obj.EyeColor = customer.EyeColor;
-            obj.IsActive = customer.IsActive;
-            obj.Latitude = customer.Latitude;
-            obj.Longitude = customer.Longitude;
-            obj.Name = customer.Name = new Person { FirstName = customer.Name.FirstName, LastName = customer.Name.LastName };
-            obj.Phone = customer.Phone;
-            obj.Registered = customer.Registered = DateTime.Parse(DateTime.Now.ToString("f"));
-            obj.Tags = customer.Tags;
+            using (StreamReader reader = new StreamReader(customerDataFile))
+            {
+                var data = reader.ReadToEnd();
+                JArray jarray = JArray.Parse(data) as JArray;
 
+                // deserialize entire json blob via linq
+                gobjCustomers = GetCustomerData();
+
+                //get item by index, update this object in the list
+                foreach (Customer person in gobjCustomers)
+                {
+                    int index = gobjCustomers.IndexOf(person);
+
+                    if (index >= 0 && (customer.Id == 0 || person.Id != customer.Id))
+                    {
+                        gobjCustomers[index] = customer;
+                        obj.Id = customer.Id = newId; // need new id
+                        obj.Address = customer.Address;
+                        obj.Age = customer.Age;
+                        obj.AgentId = customer.AgentId; // "list" of agent ids available
+                        obj.Balance = customer.Balance;
+                        obj.Company = customer.Company;
+                        obj.CustomerGuid = customer.CustomerGuid = new Guid();
+                        obj.Email = customer.Email;
+                        obj.EyeColor = customer.EyeColor;
+                        obj.IsActive = customer.IsActive;
+                        obj.Latitude = customer.Latitude;
+                        obj.Longitude = customer.Longitude;
+                        obj.Name = customer.Name = new Person { FirstName = customer.Name.FirstName, LastName = customer.Name.LastName };
+                        obj.Phone = customer.Phone;
+                        obj.Registered = customer.Registered = DateTime.Parse(DateTime.Now.ToString("f"));
+                        obj.Tags = customer.Tags;
+
+                        break;
+                    }
+                }
+            }
+
+            var settings = new JsonSerializerSettings();
+            settings.ContractResolver = new LowercaseContractResolver();
+            var convertedCustomer = JsonConvert.SerializeObject(gobjCustomers, Formatting.Indented, settings);
+            SaveCustomerData(convertedCustomer);
+
+            
 
             return obj;
         }

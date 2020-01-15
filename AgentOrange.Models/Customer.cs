@@ -29,7 +29,7 @@ namespace AgentOrange.Models
         public string Company { get; set; }
         [DataMember]
         [DataType(DataType.EmailAddress)]
-      [JsonPropertyName("email")]
+        [JsonPropertyName("email")]
         public string Email { get; set; }
         [DataMember]
         [JsonPropertyName("phone")]
