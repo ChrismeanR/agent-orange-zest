@@ -10,20 +10,6 @@ namespace AgentOrange.Models
 {
     public class HelperUtils
     {
-        public class LowercaseContractResolver : DefaultContractResolver
-        {
-            private Dictionary<string, string> PropertyMappings { get; set; }
-
-
-            protected override string ResolvePropertyName(string propertyName)
-            {
-                //string resolvedName = null;
-                //var resolved = this.PropertyMappings.TryGetValue(propertyName, out resolvedName);
-
-                return propertyName.ToLower();
-            }
-        }
-
         public class CustomContractResolver : DefaultContractResolver
         {
 
