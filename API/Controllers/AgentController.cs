@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http.Description;
 using AgentOrange.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -14,36 +13,37 @@ namespace API.Controllers
     public class AgentController : ControllerBase
     {
         public AgentOrange.Models.Data.JsonDataContext AgentContext = new AgentOrange.Models.Data.JsonDataContext();
-        public IList<Agent> gobjContext;
-        public Agent gobjAgent;
 
         // GET: api/AgentApi
         [HttpGet]
+        [ResponseType(typeof(IEnumerable<Agent>))]
         public IEnumerable<Agent> Get()
         {
-            gobjContext = AgentContext.GetAgentData();
-            return gobjContext;
+            return AgentContext.GetAgentData();
         }
 
         // GET: api/AgentApi/5
         [HttpGet("{id}", Name = "GetAgentById")]
+        [ResponseType(typeof(Agent))]
         public Agent Get(int id)
         {
-            gobjAgent = AgentContext.GetAgentData(id);
-            return gobjAgent;
+            return AgentContext.GetAgentData(id);
         }
 
         // POST: api/AgentApi
         [HttpPost]
-        public void Post([FromBody] Agent agent)
+        [ResponseType(typeof(Agent))]
+        public Agent Post([FromBody] Agent agent)
         {
-            gobjAgent = AgentContext.UpdateAgentData(agent.Id, agent);
+            return AgentContext.CreateAgentData(agent);
         }
-        // POST: api/AgentApi
+
+        // PUT: api/AgentApi
         [HttpPut]
+        [ResponseType(typeof(Agent))]
         public Agent Put([FromBody] Agent agent)
         {
-            return gobjAgent = AgentContext.UpdateAgentData(agent.Id, agent);
+            return AgentContext.UpdateAgentData(agent);
         }
 
     }

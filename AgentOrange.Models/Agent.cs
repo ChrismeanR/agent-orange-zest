@@ -19,7 +19,7 @@ namespace AgentOrange.Models
         public string Name { get; set; }
         [DataMember]
         [JsonPropertyName("address")]
-        public string StreetAddress { get; set; }
+        public string Address { get; set; }
         [DataMember]
         [JsonPropertyName("city")]
         public string City { get; set; }

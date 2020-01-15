@@ -22,7 +22,9 @@ namespace AgentOrange.Models
                                         {"AgentId", "agent_id"},
                                         {"CustomerGuid", "guid"},
                                         {"IsActive", "isActive" },
-                                        {"EyeColor","eyeColor" }, };
+                                        {"EyeColor","eyeColor" },
+                                        {"ZipCode","zipCode" },
+                                        {"PhoneNumbers", "phone" }, };
             }
 
             protected override string ResolvePropertyName(string propertyName)
