@@ -35,14 +35,14 @@ namespace API.Controllers
         [HttpPost]
         public Customer Post([FromBody] Customer customer)
         {
-            return customer;
+            return CustomerContext.CreateCustomer(customer);
         }
 
         // POST: api/Customer
         [HttpPut]
         public Customer Put([FromBody] Customer customer)
         {
-            return CustomerContext.UpdateCustomerData(customer.Id, customer);
+            return CustomerContext.UpdateCustomerData(customer);
         }
 
         // DELETE: api/ApiWithActions/5
