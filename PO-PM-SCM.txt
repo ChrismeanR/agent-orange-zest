@@ -1,0 +1,17 @@
+Questions that I would be asking during planning or grooming:
+
+
+Mobile ready or geared to?
+How do we plan to roll out versioning for the APIs (if mobile)
+Should we use ServiceStack to expose more contracts (XML, SOAP, jSON, etc.)? Swagger? 
+What is the user load? 
+How are we planning to authenticate (SSO, MFA, other)
+Publicly facing APIs, private, how are we ensuring PII and SOX compliance (state/county regulations)
+Do we currently have endpoints or data sets we can reuse? Is there any overlap with what we are about to build vs.
+ what is already out in production?
+
+How often are we doing db backups? Is this cloud based? 
+
+What is our MVP per sprint? 
+How are we defining Definition of Done?
+
